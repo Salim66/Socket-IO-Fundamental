@@ -18,8 +18,10 @@ const io = new Server(httpServer);
 io.on('connection', (socket) => {
     console.log('Client connected successfully'.bgYellow.black);
 
-    socket.on('disconnect', () => {
-        console.log(`Client disconnect successfully`.bgRed.white);
+    socket.emit('testdata', 'Salim Hasan', '120', "Java Developer");
+
+    socket.on('msg', (data) => {
+        console.log(data);
     })
 })
 

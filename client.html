@@ -8,11 +8,22 @@
 </head>
 <body>
     
-    <h2>Socket IO</h2>
+    <h2 id="title">Socket IO</h2>
+    <hr>
+    <input type="text" id="text" />
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
+
+        socket.on('testdata', (data1, data2, data3) => {
+            document.getElementById('title').innerHTML = data1 + data2 + data3;
+        })
+
+        document.getElementById('text').onkeyup = (e) => {
+            let msg = e.target.value;
+            socket.emit('msg', msg);
+        }
     </script>
 
 </body>
