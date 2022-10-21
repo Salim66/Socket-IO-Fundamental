@@ -16,8 +16,8 @@
     <script>
         const socket = io();
 
-        socket.on('testdata', (data1, data2, data3) => {
-            document.getElementById('title').innerHTML = data1 + data2 + data3;
+        socket.on('testdata', (data) => {
+            document.getElementById('title').innerHTML = data;
         })
 
         document.getElementById('text').onkeyup = (e) => {

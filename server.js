@@ -18,10 +18,8 @@ const io = new Server(httpServer);
 io.on('connection', (socket) => {
     console.log('Client connected successfully'.bgYellow.black);
 
-    socket.emit('testdata', 'Salim Hasan', '120', "Java Developer");
-
     socket.on('msg', (data) => {
-        console.log(data);
+        io.sockets.emit('testdata', data);
     })
 })
 
