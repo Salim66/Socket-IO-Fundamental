@@ -12,7 +12,16 @@ const app = express();
 const httpServer = createServer(app);
 
 // socket server init
-const io = new Server(httpServer); 
+const io = new Server(httpServer);
+
+// create a connection to client
+io.on('connection', (socket) => {
+    console.log('Client connected successfully'.bgYellow.black);
+
+    socket.on('disconnect', () => {
+        console.log(`Client disconnect successfully`.bgRed.white);
+    })
+})
 
 
 // route
@@ -22,6 +31,6 @@ app.get('/', (req, res) => {
 
 
 // listen server
-app.listen(5050, () => {
+httpServer.listen(5050, () => {
     console.log(`server is running on port 5050`.bgCyan.black);
 });
