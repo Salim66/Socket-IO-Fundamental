@@ -3,6 +3,7 @@ const colors = require('colors');
 const path = require('path');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const { readFileSync, writeFileSync } = require('fs');
 
 
 // init express
@@ -14,15 +15,21 @@ const httpServer = createServer(app);
 // socket server init
 const io = new Server(httpServer);
 
-// create a connection to client
 io.on('connection', (socket) => {
-    console.log('Client connected successfully'.bgYellow.black);
+    
+    let latestChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
+    io.sockets.emit('latestChat', latestChat);
 
-    socket.on('msg', (data) => {
-        io.sockets.emit('testdata', data);
+    socket.on('chat', ({ name, photo, msg }) => {
+        let oldChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
+        oldChat.push({ name, photo, msg });
+        writeFileSync(path.join(__dirname, 'db/chat.json'), JSON.stringify(oldChat));
+
+        let latestChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
+        io.sockets.emit('latestChat', latestChat);
     })
-})
 
+});
 
 // route
 app.get('/', (req, res) => {
