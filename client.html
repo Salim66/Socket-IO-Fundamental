@@ -61,81 +61,14 @@
     </style>
 </head>
 <body>
-    <audio src="./sound.mp3" id="notification"></audio>
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body" id="chat">
-                        
-                    </div>
-                    <div class="card-footer">
-                        <div class="input-group">
-                            <input id="name" type="text" class="form-control" placeholder="Name">
-                            <input id="photo" type="text"  class="form-control" placeholder="Photo">
-                            <input id="msg" type="text"  class="form-control" placeholder="Message">
-                            <button type="button" id="btn" class="btn btn-primary">Send</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
-        // get user name into localstorage
-        let name = localStorage.getItem('chat-name');
-        // data get
-        socket.on('latestChat', (data) => {
-            let chat = '';
-            data.forEach(val => {
-                if(name == val.name){
-                    chat += `
-                    <div class="card-box d-flex flex-row justify-content-end mb-3">
-                        <img src=${ val.photo } alt="">
-                        <div class="message user">
-                            <h3>${ val.name }</h3>
-                            <p>${ val.msg }</p>
-                        </div>
-                    </div>
-                    `;
-                }else {
-                    document.getElementById('notification').play();
-                    chat += `
-                    <div class="card-box d-flex flex-row mb-3">
-                        <img src=${ val.photo } alt="">
-                        <div class="message">
-                            <h3>${ val.name }</h3>
-                            <p>${ val.msg }</p>
-                        </div>
-                    </div>
-                    `;
-                }
-            });
-            console.log(data);
-            document.getElementById('chat').innerHTML = chat;
-        });
-
-        // data store
-        document.getElementById('btn').onclick = (e) => {
-            e.preventDefault();
-            let name = document.getElementById('name').value;
-            let photo = document.getElementById('photo').value;
-            let msg = document.getElementById('msg').value;
-
-            // name store localstorage , name wise user view
-            if(!localStorage.getItem('chat-name')){
-                localStorage.setItem('chat-name', name);
-            }
-
-            // data send to server
-            socket.emit('chat', { name, photo, msg });
-            // msg clear into from
-            document.getElementById('msg').value = '';
-        }
+        
+        const socket = io('/personal');
+        const socketo = io('/official');
 
     </script>
 

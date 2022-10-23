@@ -15,21 +15,16 @@ const httpServer = createServer(app);
 // socket server init
 const io = new Server(httpServer);
 
-io.on('connection', (socket) => {
-    
-    let latestChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
-    io.sockets.emit('latestChat', latestChat);
+const personalMeet = io.of('/personal');
+const officialMeet = io.of('/official');
 
-    socket.on('chat', ({ name, photo, msg }) => {
-        let oldChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
-        oldChat.push({ name, photo, msg });
-        writeFileSync(path.join(__dirname, 'db/chat.json'), JSON.stringify(oldChat));
-
-        let latestChat = JSON.parse(readFileSync(path.join(__dirname, 'db/chat.json')).toString());
-        io.sockets.emit('latestChat', latestChat);
-    })
-
+personalMeet.on('connection', (socket) => {
+    console.log('Personal socket is connected');
 });
+
+officialMeet.on('connection', (socket) => {
+    console.log('Official socket is connected');
+})
 
 // static folder
 app.use(express.static(path.join(__dirname, '')));
