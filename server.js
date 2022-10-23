@@ -15,15 +15,17 @@ const httpServer = createServer(app);
 // socket server init
 const io = new Server(httpServer);
 
-const personalMeet = io.of('/personal');
-const officialMeet = io.of('/official');
+io.on('connection', (socket) => {
 
-personalMeet.on('connection', (socket) => {
-    console.log('Personal socket is connected');
-});
+    socket.join('php');
+    io.sockets.in('php').emit('msg1', 'I am from php');
 
-officialMeet.on('connection', (socket) => {
-    console.log('Official socket is connected');
+    socket.join('mern');
+    io.sockets.in('mern').emit('msg2', 'I am from mern');
+
+    socket.join('laravel');
+    io.sockets.in('laravel').emit('msg3', 'I am from laravel');
+
 })
 
 // static folder
